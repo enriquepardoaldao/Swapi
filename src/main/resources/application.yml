@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: gs-rest-service
+    
+url:
+  url: "https://swapi.dev/api/"
+
+error:
+  text:
+    emptyname: "O campo name esta vacio."
+    notexistname: "Non existe ninguen con ese nome."
