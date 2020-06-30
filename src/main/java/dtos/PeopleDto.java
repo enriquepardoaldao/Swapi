@@ -10,7 +10,15 @@ public class PeopleDto {
 	public PeopleDto() {
 		
 	}
-	
+
+	public PeopleDto(String name, String birth_year, String gender, String planet_name) {
+		super();
+		this.name = name;
+		this.birth_year = birth_year;
+		this.gender = gender;
+		this.planet_name = planet_name;
+	}
+
 	public String getName() {
 		return name;
 	}

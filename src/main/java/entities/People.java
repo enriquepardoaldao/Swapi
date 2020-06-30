@@ -7,6 +7,7 @@ public class People {
 	private String name;
 	private String birth_year;
 	private String gender;
+	private String homeworld;
 	
 	
 	@JsonIgnoreProperties(ignoreUnknown = true)
@@ -16,15 +17,21 @@ public class People {
 
 
 	@JsonIgnoreProperties(ignoreUnknown = true)
-	public People(String name, String birth_year, String gender) {
+	public People(String name, String birth_year, String gender, String homeworld) {
 		this.name = name;
 		this.birth_year = birth_year;
 		this.gender = gender;
+		this.homeworld = homeworld;
 	}
 
 
 	public String getName() {
 		return name;
+	}
+
+
+	public String getHomeworld() {
+		return homeworld;
 	}
 
 
@@ -51,6 +58,14 @@ public class People {
 	public void setGender(String gender) {
 		this.gender = gender;
 	}
+	
+	
+	public void setHomeworld(String homeworld) {
+		this.homeworld = homeworld;
+	}
+
+	
+	
 	
 	
 }
