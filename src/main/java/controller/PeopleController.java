@@ -20,6 +20,7 @@ import dtos.PeopleDto;
 import entities.Film;
 import entities.Planet;
 import entities.Result;
+import entities.Vehicle;
 import service.SwapiService;
 
 	
@@ -44,6 +45,8 @@ public class PeopleController {
 			  headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 			Result result = swapiService.getPeopleByName(name);
 			Planet planet = swapiService.getPlanet(result.getResults());
+			
+			
 			ArrayList<Film> film = swapiService.getFilm(result.getResults().get(0).getFilms());;
 			ArrayList<FilmDto> filmDto = new ArrayList<>();
 			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -53,8 +56,12 @@ public class PeopleController {
 				filmDto.add(new FilmDto(film.get(i).getTitle(), date));
 			}
 
+			ArrayList<Vehicle> vehicles = swapiService.getVehicle(result.getResults().get(0).getVehicles());
+			
+			
+			
 			return new PeopleDto(result.getResults().get(0).getName(), result.getResults().get(0).getBirth_year(),
-					result.getResults().get(0).getGender(), planet.getName(), filmDto);
+					result.getResults().get(0).getGender(), planet.getName(), swapiService.faster(vehicles), filmDto);
 			
 		
 	}

@@ -10,18 +10,21 @@ public class PeopleDto {
 	private String birth_year;
 	private String gender;
 	private String planet_name;
+	private String fastest_vehicle_driven;
 	private ArrayList<FilmDto> films;
 	
 	public PeopleDto() {
 		
 	}
 
-	public PeopleDto(String name, String birth_year, String gender, String planet_name, ArrayList<FilmDto> films) {
+	public PeopleDto(String name, String birth_year, String gender, String planet_name, String fastest_vehicle_driven,
+			ArrayList<FilmDto> films) {
 		super();
 		this.name = name;
 		this.birth_year = birth_year;
 		this.gender = gender;
 		this.planet_name = planet_name;
+		this.fastest_vehicle_driven = fastest_vehicle_driven;
 		this.films = films;
 	}
 
@@ -39,6 +42,10 @@ public class PeopleDto {
 
 	public String getPlanet_name() {
 		return planet_name;
+	}
+
+	public String getFastest_vehicle_driven() {
+		return fastest_vehicle_driven;
 	}
 
 	public ArrayList<FilmDto> getFilms() {
@@ -61,22 +68,15 @@ public class PeopleDto {
 		this.planet_name = planet_name;
 	}
 
+	public void setFastest_vehicle_driven(String fastest_vehicle_driven) {
+		this.fastest_vehicle_driven = fastest_vehicle_driven;
+	}
+
 	public void setFilms(ArrayList<FilmDto> films) {
 		this.films = films;
 	}
 
 	
-
-	
-
-	
-
-	
-
 	
 	
-
-
-	
-
 }

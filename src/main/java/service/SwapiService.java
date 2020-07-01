@@ -16,6 +16,7 @@ import entities.Film;
 import entities.People;
 import entities.Planet;
 import entities.Result;
+import entities.Vehicle;
 
 @Service
 public class SwapiService {
@@ -67,11 +68,38 @@ public class SwapiService {
 			Film f = mapper.readValue(p.getBody(), Film.class);
 			films.add(f);
 		}
-		
-		
-		
-		
+
 		return films;
 	
+	}
+	
+	public ArrayList<Vehicle> getVehicle(ArrayList<String> vehicle) throws JsonMappingException, JsonProcessingException{
+		
+		ArrayList<Vehicle> vechicles = new ArrayList<>();
+		
+		for(int i=0; i<vehicle.size();i++) {
+			StringBuilder stringBuilder = new StringBuilder(vehicle.get(i));
+			stringBuilder.insert(4, "s");
+			
+			ResponseEntity<String> p = restTemplate.getForEntity(stringBuilder.toString(), String.class);
+			Vehicle v = mapper.readValue(p.getBody(), Vehicle.class);
+			vechicles.add(v);
+		}
+
+		return vechicles;
+	}
+	
+	public String faster(ArrayList<Vehicle> vehicle) {
+		
+		int faster=0;
+		String nameFaster="";
+		
+		for(int i=0; i<vehicle.size(); i++) {
+			if(Integer.parseInt(vehicle.get(i).getMax_atmosphering_speed()) > faster) {
+				faster = Integer.parseInt(vehicle.get(i).getMax_atmosphering_speed());
+				nameFaster = vehicle.get(i).getName();			}
+		}
+		
+		return nameFaster;
 	}
 }
