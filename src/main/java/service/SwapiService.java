@@ -47,8 +47,6 @@ public class SwapiService {
 		
 		Result result = mapper.readValue(p.getBody(), Result.class);
 		
-		getPlanet(result.getResults());
-		
 		System.out.println(p.getBody().toString());
 				
 		return result;
@@ -56,11 +54,10 @@ public class SwapiService {
 	
 	public Planet getPlanet(List<People> people) throws JsonMappingException, JsonProcessingException {
 		
-		HttpHeaders headers = new HttpHeaders();
-		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-		HttpEntity<String> entity = new HttpEntity<>(headers);
+		StringBuilder stringBuilder = new StringBuilder(people.get(0).getHomeworld());
+		stringBuilder.insert(4, "s");
 		
-		ResponseEntity<String> p = restTemplate.exchange(people.get(0).getHomeworld(), HttpMethod.GET, entity, String.class);
+		ResponseEntity<String> p = restTemplate.getForEntity(stringBuilder.toString(), String.class);
 		
 		Planet planet = mapper.readValue(p.getBody(), Planet.class);
 		

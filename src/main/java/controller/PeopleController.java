@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import entities.People;
+import entities.Planet;
 import entities.Result;
 import exception.HttpError;
 import service.SwapiService;
@@ -36,10 +36,10 @@ public class PeopleController {
 		try {
 			HttpHeaders headers = new HttpHeaders();
 			  headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-			  
-			Result response = swapiService.getPeopleByName(name);
+			Result result = swapiService.getPeopleByName(name);
+			Planet planet = swapiService.getPlanet(result.getResults());
 		
-			return new ResponseEntity<Result>(response, headers, HttpStatus.OK);
+			return new ResponseEntity<Result>(result, headers, HttpStatus.OK);
 			
 		}catch (Exception e) {
 			HttpHeaders headers = new HttpHeaders();
