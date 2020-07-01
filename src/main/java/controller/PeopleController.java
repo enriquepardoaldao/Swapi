@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import entities.People;
+import entities.Result;
 import exception.HttpError;
 import service.SwapiService;
 
@@ -29,16 +30,16 @@ public class PeopleController {
 	
 	@GetMapping("/person-info")
 	public ResponseEntity<?> findPeopleByName(
-			@RequestParam(value = "name", defaultValue = "") String name) {
+			@RequestParam(value = "name", required=true) String name) {
 		
 		
 		try {
 			HttpHeaders headers = new HttpHeaders();
 			  headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 			  
-			People response = swapiService.getPeopleByName(name);
+			Result response = swapiService.getPeopleByName(name);
 		
-			return new ResponseEntity<People>(response, headers, HttpStatus.OK);
+			return new ResponseEntity<Result>(response, headers, HttpStatus.OK);
 			
 		}catch (Exception e) {
 			HttpHeaders headers = new HttpHeaders();

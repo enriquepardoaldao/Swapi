@@ -1,6 +1,7 @@
 package service;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -11,8 +12,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import entities.People;
 import entities.Planet;
+import entities.Result;
 
 @Service
 public class SwapiService {
@@ -24,30 +30,41 @@ public class SwapiService {
 	@Autowired
 	private RestTemplate restTemplate;
 	
+	@Autowired
+	private ObjectMapper mapper;
+	
 	public SwapiService() {
 		
 	}
 	
-	public People getPeopleByName(String peopleName) {		
+	public Result getPeopleByName(String peopleName) throws JsonMappingException, JsonProcessingException {		
 		
+		/*HttpHeaders headers = new HttpHeaders();
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		HttpEntity<String> entity = new HttpEntity<>(peopleName, headers);*/
+		
+		ResponseEntity<String> p = restTemplate.getForEntity(url+"people/?search={peopleName}",String.class, peopleName);
+		
+		Result result = mapper.readValue(p.getBody(), Result.class);
+		
+		getPlanet(result.getResults());
+		
+		System.out.println(p.getBody().toString());
+				
+		return result;
+	}
+	
+	public Planet getPlanet(List<People> people) throws JsonMappingException, JsonProcessingException {
 		
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-		HttpEntity<String> entity = new HttpEntity<String>(headers);
+		HttpEntity<String> entity = new HttpEntity<>(headers);
 		
-		ResponseEntity<People> p = restTemplate.exchange(url + "people?search=" + peopleName, HttpMethod.GET, entity,People.class);
+		ResponseEntity<String> p = restTemplate.exchange(people.get(0).getHomeworld(), HttpMethod.GET, entity, String.class);
 		
-		System.out.println("Parada");
-		People people = new People(p.getBody().getName(), p.getBody().getBirth_year(), p.getBody().getGender(), p.getBody().getHomeworld());
-				
-		return people;
-	}
-	
-	public Planet getPlanet(String urlPlanet) {
+		Planet planet = mapper.readValue(p.getBody(), Planet.class);
 		
-		ResponseEntity<Planet> re = restTemplate.getForEntity(urlPlanet, Planet.class);
-		
-		return re.getBody();
+		return planet;
 		
 	}
 	
