@@ -1,20 +1,25 @@
 package controller;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+
+import dtos.FilmDto;
+import dtos.PeopleDto;
+import entities.Film;
 import entities.Planet;
 import entities.Result;
-import exception.HttpError;
 import service.SwapiService;
 
 	
@@ -29,25 +34,30 @@ public class PeopleController {
 	
 	
 	@GetMapping("/person-info")
-	public ResponseEntity<?> findPeopleByName(
-			@RequestParam(value = "name", required=true) String name) {
+	public PeopleDto showPeople(
+			@RequestParam(
+						value = "name", 
+						required=true) 
+						String name) throws JsonMappingException, JsonProcessingException {
 		
-		
-		try {
 			HttpHeaders headers = new HttpHeaders();
 			  headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 			Result result = swapiService.getPeopleByName(name);
 			Planet planet = swapiService.getPlanet(result.getResults());
-		
-			return new ResponseEntity<Result>(result, headers, HttpStatus.OK);
+			ArrayList<Film> film = swapiService.getFilm(result.getResults().get(0).getFilms());;
+			ArrayList<FilmDto> filmDto = new ArrayList<>();
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 			
-		}catch (Exception e) {
-			HttpHeaders headers = new HttpHeaders();
-			  headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-		      HttpError error = new HttpError();
-				error.setMessage(e.toString());
-			return new ResponseEntity<HttpError>(error,headers, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+			for(int i=0; i<film.size(); i++) {
+				String date = simpleDateFormat.format(film.get(i).getRelease_date());
+				filmDto.add(new FilmDto(film.get(i).getTitle(), date));
+			}
+
+			return new PeopleDto(result.getResults().get(0).getName(), result.getResults().get(0).getBirth_year(),
+					result.getResults().get(0).getGender(), planet.getName(), filmDto);
+			
+		
 	}
 	
 }
+

@@ -1,13 +1,9 @@
 package service;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -16,6 +12,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import entities.Film;
 import entities.People;
 import entities.Planet;
 import entities.Result;
@@ -24,8 +21,6 @@ import entities.Result;
 public class SwapiService {
 	
 	private String url = "https://swapi.dev/api/";
-	
-	//Para buscar la url es así https://swapi.dev/api/people/?search=Luke Skywalker
 	
 	@Autowired
 	private RestTemplate restTemplate;
@@ -39,12 +34,7 @@ public class SwapiService {
 	
 	public Result getPeopleByName(String peopleName) throws JsonMappingException, JsonProcessingException {		
 		
-		/*HttpHeaders headers = new HttpHeaders();
-		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-		HttpEntity<String> entity = new HttpEntity<>(peopleName, headers);*/
-		
-		ResponseEntity<String> p = restTemplate.getForEntity(url+"people/?search={peopleName}",String.class, peopleName);
-		
+		ResponseEntity<String> p = restTemplate.getForEntity(url+"people/?search={peopleName}",String.class, peopleName);	
 		Result result = mapper.readValue(p.getBody(), Result.class);
 		
 		System.out.println(p.getBody().toString());
@@ -65,5 +55,23 @@ public class SwapiService {
 		
 	}
 	
+	public ArrayList<Film> getFilm(ArrayList<String> film) throws JsonMappingException, JsonProcessingException {
+		
+		ArrayList<Film> films = new ArrayList<>();
+		
+		for(int i=0; i<film.size();i++) {
+			StringBuilder stringBuilder = new StringBuilder(film.get(i));
+			stringBuilder.insert(4, "s");
+			
+			ResponseEntity<String> p = restTemplate.getForEntity(stringBuilder.toString(), String.class);
+			Film f = mapper.readValue(p.getBody(), Film.class);
+			films.add(f);
+		}
+		
+		
+		
+		
+		return films;
 	
+	}
 }
