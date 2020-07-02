@@ -2,11 +2,14 @@ package controller;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
+
+import javax.management.InstanceNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,6 +25,7 @@ import entities.Planet;
 import entities.Result;
 import entities.Starship;
 import entities.Vehicle;
+import exception.HttpError;
 import service.SwapiService;
 
 	
@@ -36,15 +40,22 @@ public class PeopleController {
 	
 	
 	@GetMapping("/person-info")
-	public PeopleDto showPeople(
-			@RequestParam(
-						value = "name", 
-						required=true) 
-						String name) throws JsonMappingException, JsonProcessingException {
-		
+	public ResponseEntity<?> showPeople(
+			@RequestParam(value = "name", 
+							required=true) 
+							String name) throws JsonMappingException, JsonProcessingException, InstanceNotFoundException {
+		try {
 			HttpHeaders headers = new HttpHeaders();
-			  headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+				headers.add("Content-Type", MediaType.APPLICATION_JSON_VALUE);
+			
 			Result result = swapiService.getPeopleByName(name);
+			
+			if (result.getCount() == 0) {
+				HttpError error = new HttpError();
+				error.setMessage("no existe nombre");
+				return new ResponseEntity<HttpError>(error,headers, HttpStatus.NOT_FOUND);
+			}			
+			
 			Planet planet = swapiService.getPlanet(result.getResults());
 			
 			
@@ -60,11 +71,21 @@ public class PeopleController {
 			ArrayList<Vehicle> vehicles = swapiService.getVehicle(result.getResults().get(0).getVehicles());
 			ArrayList<Starship> starships = swapiService.getStarship(result.getResults().get(0).getStarships());
 			
+						
+			//return new ResponseEntity<PeopleDto>(result,headers, HttpStatus.OK);
 			
-			
-			return new PeopleDto(result.getResults().get(0).getName(), result.getResults().get(0).getBirth_year(),
+			PeopleDto pd = new PeopleDto(result.getResults().get(0).getName(), result.getResults().get(0).getBirth_year(),
 					result.getResults().get(0).getGender(), planet.getName(), swapiService.faster(vehicles, starships), filmDto);
-			
+
+			return new ResponseEntity<PeopleDto>(pd, headers, HttpStatus.OK);
+		
+		} catch	(Exception e) {
+			HttpHeaders headers = new HttpHeaders();
+		      headers.add("Content-Type", MediaType.APPLICATION_JSON_VALUE);
+		      HttpError error = new HttpError();
+				error.setMessage(e.toString());
+			return new ResponseEntity<HttpError>(error,headers, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 		
 	}
 	
