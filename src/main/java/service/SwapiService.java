@@ -16,6 +16,7 @@ import entities.Film;
 import entities.People;
 import entities.Planet;
 import entities.Result;
+import entities.Starship;
 import entities.Vehicle;
 
 @Service
@@ -89,7 +90,23 @@ public class SwapiService {
 		return vechicles;
 	}
 	
-	public String faster(ArrayList<Vehicle> vehicle) {
+	public ArrayList<Starship> getStarship(ArrayList<String> starship) throws JsonMappingException, JsonProcessingException{
+		
+		ArrayList<Starship> starships = new ArrayList<>();
+		
+		for(int i=0; i<starship.size();i++) {
+			StringBuilder stringBuilder = new StringBuilder(starship.get(i));
+			stringBuilder.insert(4, "s");
+			
+			ResponseEntity<String> p = restTemplate.getForEntity(stringBuilder.toString(), String.class);
+			Starship s = mapper.readValue(p.getBody(), Starship.class);
+			starships.add(s);
+		}
+
+		return starships;
+	}
+	
+	public String faster(ArrayList<Vehicle> vehicle, ArrayList<Starship> starship) {
 		
 		int faster=0;
 		String nameFaster="";
@@ -97,7 +114,15 @@ public class SwapiService {
 		for(int i=0; i<vehicle.size(); i++) {
 			if(Integer.parseInt(vehicle.get(i).getMax_atmosphering_speed()) > faster) {
 				faster = Integer.parseInt(vehicle.get(i).getMax_atmosphering_speed());
-				nameFaster = vehicle.get(i).getName();			}
+				nameFaster = vehicle.get(i).getName();
+			}
+		}
+		
+		for(int i=0; i<starship.size(); i++) {
+			if(Integer.parseInt(starship.get(i).getMax_atmosphering_speed()) > faster) {
+				faster = Integer.parseInt(starship.get(i).getMax_atmosphering_speed());
+				nameFaster = starship.get(i).getName();
+			}
 		}
 		
 		return nameFaster;

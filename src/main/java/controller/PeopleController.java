@@ -20,6 +20,7 @@ import dtos.PeopleDto;
 import entities.Film;
 import entities.Planet;
 import entities.Result;
+import entities.Starship;
 import entities.Vehicle;
 import service.SwapiService;
 
@@ -57,11 +58,12 @@ public class PeopleController {
 			}
 
 			ArrayList<Vehicle> vehicles = swapiService.getVehicle(result.getResults().get(0).getVehicles());
+			ArrayList<Starship> starships = swapiService.getStarship(result.getResults().get(0).getStarships());
 			
 			
 			
 			return new PeopleDto(result.getResults().get(0).getName(), result.getResults().get(0).getBirth_year(),
-					result.getResults().get(0).getGender(), planet.getName(), swapiService.faster(vehicles), filmDto);
+					result.getResults().get(0).getGender(), planet.getName(), swapiService.faster(vehicles, starships), filmDto);
 			
 		
 	}
