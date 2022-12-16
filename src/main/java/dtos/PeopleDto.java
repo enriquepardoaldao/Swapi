@@ -1,6 +1,6 @@
 package dtos;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Date;
 import java.util.Map;
 
@@ -11,14 +11,14 @@ public class PeopleDto {
 	private String gender;
 	private String planet_name;
 	private String fastest_vehicle_driven;
-	private ArrayList<FilmDto> films;
+	private List<FilmDto> films;
 	
 	public PeopleDto() {
 		
 	}
 
 	public PeopleDto(String name, String birth_year, String gender, String planet_name, String fastest_vehicle_driven,
-			ArrayList<FilmDto> films) {
+			List<FilmDto> films) {
 		super();
 		this.name = name;
 		this.birth_year = birth_year;
@@ -48,7 +48,7 @@ public class PeopleDto {
 		return fastest_vehicle_driven;
 	}
 
-	public ArrayList<FilmDto> getFilms() {
+	public List<FilmDto> getFilms() {
 		return films;
 	}
 
@@ -72,7 +72,7 @@ public class PeopleDto {
 		this.fastest_vehicle_driven = fastest_vehicle_driven;
 	}
 
-	public void setFilms(ArrayList<FilmDto> films) {
+	public void setFilms(List<FilmDto> films) {
 		this.films = films;
 	}
 
