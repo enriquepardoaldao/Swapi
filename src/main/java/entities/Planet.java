@@ -1,6 +1,6 @@
 package entities;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -15,32 +15,34 @@ public class Planet {
 	private String climate;
 	private String terrain;
 	private String surface_water;
-	private ArrayList<String> residents;
-	private ArrayList<String> films;
+	private List<String> residents;
+	private List<String> films;
 	private String url;
 	private String created;
 	private String edited;
-	
+
+	@JsonIgnoreProperties(ignoreUnknown = true)
+	public Planet(){
+
+	}
 	
 	@JsonIgnoreProperties(ignoreUnknown = true)
-	public Planet(String name, String diameter, String rotation_period, String orbital_period, String gravity,
-			String propulation, String climate, String terrain, String surface_water, ArrayList<String> residents,
-			ArrayList<String> films, String url, String created, String edited) {
+	private Planet(Builder builder) {
 		super();
-		this.name = name;
-		this.diameter = diameter;
-		this.rotation_period = rotation_period;
-		this.orbital_period = orbital_period;
-		this.gravity = gravity;
-		this.propulation = propulation;
-		this.climate = climate;
-		this.terrain = terrain;
-		this.surface_water = surface_water;
-		this.residents = residents;
-		this.films = films;
-		this.url = url;
-		this.created = created;
-		this.edited = edited;
+		this.name = builder.name;
+		this.diameter = builder.diameter;
+		this.rotation_period = builder.rotation_period;
+		this.orbital_period = builder.orbital_period;
+		this.gravity = builder.gravity;
+		this.propulation = builder.propulation;
+		this.climate = builder.climate;
+		this.terrain = builder.terrain;
+		this.surface_water = builder.surface_water;
+		this.residents = builder.residents;
+		this.films = builder.films;
+		this.url = builder.url;
+		this.created = builder.created;
+		this.edited = builder.edited;
 	}
 
 
@@ -89,12 +91,12 @@ public class Planet {
 	}
 
 
-	public ArrayList<String> getResidents() {
+	public List<String> getResidents() {
 		return residents;
 	}
 
 
-	public ArrayList<String> getFilms() {
+	public List<String> getFilms() {
 		return films;
 	}
 
@@ -113,77 +115,112 @@ public class Planet {
 		return edited;
 	}
 
+	public static class Builder{
 
-	public void setName(String name) {
-		this.name = name;
+		private String name;
+		private String diameter;
+		private String rotation_period;
+		private String orbital_period;
+		private String gravity;
+		private String propulation;
+		private String climate;
+		private String terrain;
+		private String surface_water;
+		private List<String> residents;
+		private List<String> films;
+		private String url;
+		private String created;
+		private String edited;
+
+		public Builder setName(String name) {
+			this.name = name;
+			return this;
+		}
+
+
+		public Builder setDiameter(String diameter) {
+			this.diameter = diameter;
+			return this;
+		}
+
+
+		public Builder setRotation_period(String rotation_period) {
+			this.rotation_period = rotation_period;
+			return this;
+		}
+
+
+		public Builder setOrbital_period(String orbital_period) {
+			this.orbital_period = orbital_period;
+			return this;
+		}
+
+
+		public Builder setGravity(String gravity) {
+			this.gravity = gravity;
+			return this;
+		}
+
+
+		public Builder setPropulation(String propulation) {
+			this.propulation = propulation;
+			return this;
+		}
+
+
+		public Builder setClimate(String climate) {
+			this.climate = climate;
+			return this;
+		}
+
+
+		public Builder setTerrain(String terrain) {
+			this.terrain = terrain;
+			return this;
+		}
+
+
+		public Builder setSurface_water(String surface_water) {
+			this.surface_water = surface_water;
+			return this;
+		}
+
+
+		public Builder setResidents(List<String> residents) {
+			this.residents = residents;
+			return this;
+		}
+
+
+		public Builder setFilms(List<String> films) {
+			this.films = films;
+			return this;
+		}
+
+
+		public Builder setUrl(String url) {
+			this.url = url;
+			return this;
+		}
+
+
+		public Builder setCreated(String created) {
+			this.created = created;
+			return this;
+		}
+
+
+		public Builder setEdited(String edited) {
+			this.edited = edited;
+			return this;
+		}
+
+		public Planet build(){
+			return new Planet(this);
+		}
+		
+		
 	}
-
-
-	public void setDiameter(String diameter) {
-		this.diameter = diameter;
-	}
-
-
-	public void setRotation_period(String rotation_period) {
-		this.rotation_period = rotation_period;
-	}
-
-
-	public void setOrbital_period(String orbital_period) {
-		this.orbital_period = orbital_period;
-	}
-
-
-	public void setGravity(String gravity) {
-		this.gravity = gravity;
-	}
-
-
-	public void setPropulation(String propulation) {
-		this.propulation = propulation;
-	}
-
-
-	public void setClimate(String climate) {
-		this.climate = climate;
-	}
-
-
-	public void setTerrain(String terrain) {
-		this.terrain = terrain;
-	}
-
-
-	public void setSurface_water(String surface_water) {
-		this.surface_water = surface_water;
-	}
-
-
-	public void setResidents(ArrayList<String> residents) {
-		this.residents = residents;
-	}
-
-
-	public void setFilms(ArrayList<String> films) {
-		this.films = films;
-	}
-
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
-
-	public void setCreated(String created) {
-		this.created = created;
-	}
-
-
-	public void setEdited(String edited) {
-		this.edited = edited;
-	}
-	
-	
 	
 	
 

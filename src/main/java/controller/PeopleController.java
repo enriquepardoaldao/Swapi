@@ -1,7 +1,7 @@
 package controller;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.management.InstanceNotFoundException;
 
@@ -59,8 +59,8 @@ public class PeopleController {
 			Planet planet = swapiService.getPlanet(result.getResults());
 			
 			
-			ArrayList<Film> film = swapiService.getFilm(result.getResults().get(0).getFilms());;
-			ArrayList<FilmDto> filmDto = new ArrayList<>();
+			List<Film> film = swapiService.getFilm(result.getResults().get(0).getFilms());;
+			List<FilmDto> filmDto = null;
 			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 			
 			for(int i=0; i<film.size(); i++) {
@@ -68,8 +68,8 @@ public class PeopleController {
 				filmDto.add(new FilmDto(film.get(i).getTitle(), date));
 			}
 
-			ArrayList<Vehicle> vehicles = swapiService.getVehicle(result.getResults().get(0).getVehicles());
-			ArrayList<Starship> starships = swapiService.getStarship(result.getResults().get(0).getStarships());
+			List<Vehicle> vehicles = swapiService.getVehicle(result.getResults().get(0).getVehicles());
+			List<Starship> starships = swapiService.getStarship(result.getResults().get(0).getStarships());
 			
 						
 			//return new ResponseEntity<PeopleDto>(result,headers, HttpStatus.OK);

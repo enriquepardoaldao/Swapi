@@ -1,6 +1,6 @@
 package service;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,9 +57,9 @@ public class SwapiService {
 		
 	}
 	
-	public ArrayList<Film> getFilm(ArrayList<String> film) throws JsonMappingException, JsonProcessingException {
+	public List<Film> getFilm(List<String> film) throws JsonMappingException, JsonProcessingException {
 		
-		ArrayList<Film> films = new ArrayList<>();
+		List<Film> films = null;
 		
 		for(int i=0; i<film.size();i++) {
 			StringBuilder stringBuilder = new StringBuilder(film.get(i));
@@ -74,9 +74,9 @@ public class SwapiService {
 	
 	}
 	
-	public ArrayList<Vehicle> getVehicle(ArrayList<String> vehicle) throws JsonMappingException, JsonProcessingException{
+	public List<Vehicle> getVehicle(List<String> vehicle) throws JsonMappingException, JsonProcessingException{
 		
-		ArrayList<Vehicle> vechicles = new ArrayList<>();
+		List<Vehicle> vechicles = null;
 		
 		for(int i=0; i<vehicle.size();i++) {
 			StringBuilder stringBuilder = new StringBuilder(vehicle.get(i));
@@ -90,9 +90,9 @@ public class SwapiService {
 		return vechicles;
 	}
 	
-	public ArrayList<Starship> getStarship(ArrayList<String> starship) throws JsonMappingException, JsonProcessingException{
+	public List<Starship> getStarship(List<String> starship) throws JsonMappingException, JsonProcessingException{
 		
-		ArrayList<Starship> starships = new ArrayList<>();
+		List<Starship> starships = null;
 		
 		for(int i=0; i<starship.size();i++) {
 			StringBuilder stringBuilder = new StringBuilder(starship.get(i));
@@ -106,7 +106,7 @@ public class SwapiService {
 		return starships;
 	}
 	
-	public String faster(ArrayList<Vehicle> vehicle, ArrayList<Starship> starship) {
+	public String faster(List<Vehicle> vehicle, List<Starship> starship) {
 		
 		int faster=0;
 		String nameFaster="";
